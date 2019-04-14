@@ -1,5 +1,7 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.8)
+set(CMAKE_CXX_STANDARD 17)
 project (ip_filter VERSION 1.0.$ENV{TRAVIS_BUILD_NUMBER})
+
 
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aleksei Zakharov")
