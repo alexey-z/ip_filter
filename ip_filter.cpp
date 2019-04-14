@@ -10,6 +10,10 @@
 // ("11.", '.') -> ["11", ""]
 // (".11", '.') -> ["", "11"]
 // ("11.22", '.') -> ["11", "22"]
+
+using ipvector = std::vector<std::string>;
+using ippool = std::vector<ipvector>;
+
 std::vector<std::string> split(const std::string &str, char d)
 {
     std::vector<std::string> r;
@@ -33,7 +37,7 @@ int main(int argc, char const *argv[])
 {
     try
     {
-        std::vector<std::vector<std::string>> ip_pool;
+        ippool ip_pool;
 
         for(std::string line; std::getline(std::cin, line);)
         {
@@ -42,10 +46,17 @@ int main(int argc, char const *argv[])
         }
 
         // TODO reverse lexicographically sort
+//	for(ippool::const_interator ip = ip_pool.cbegin(); ip != ip_pool.cent(); ++ip)
+//	{
+//	    ipvector next_ip = ++ip;
+//	    for(ipvector::const_iterator octet = ip->cbegin(); octet != ip->cend(); ++octet)
+//	    {
+//		
+//		if (std::lexicographical_compare(octet,octet.back(),))
 
-        for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+        for(ippool::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
         {
-            for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+            for(ipvector::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
             {
                 if (ip_part != ip->cbegin())
                 {
