@@ -33,6 +33,40 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
+bool compare_ipvectors(ippool::const_iterator left, ippool::const_iterator right)
+{
+	auto len = left->size()-1;
+	ipvector::const_iterator loctet = left->cbegin();
+	ipvector::const_iterator roctet = right->cbegin();
+	for (auto i=0; i!=len; i++,loctet++,roctet++)
+	{
+		if(std::lexicographical_compare(loctet->cbegin(), loctet->cend(),
+					roctet->cbegin(), roctet->cend()))
+		{return true;}
+		else if (std::lexicographical_compare(roctet->cbegin(), roctet->cend(),
+					loctet->cbegin(), loctet->cend()))
+		{return false;}
+	}
+	return false;
+}
+
+void sort_it(bool compare(ippool::const_iterator,ippool::const_iterator),ippool &ips)
+{
+	auto elems = ips.size();
+	for (auto i=0; i<elems; i++)
+	{
+		for (auto ip = ips.begin(); std::distance(ips.begin(),ip) < elems-i-1; ip++)
+		{
+			if (compare(ip,ip+1))
+			{
+				std::swap(*ip,*(ip+1));
+			}
+		}
+	}
+}
+
+
+
 int main(int argc, char const *argv[])
 {
     try
@@ -45,14 +79,7 @@ int main(int argc, char const *argv[])
             ip_pool.push_back(split(v.at(0), '.'));
         }
 
-        // TODO reverse lexicographically sort
-//	for(ippool::const_interator ip = ip_pool.cbegin(); ip != ip_pool.cent(); ++ip)
-//	{
-//	    ipvector next_ip = ++ip;
-//	    for(ipvector::const_iterator octet = ip->cbegin(); octet != ip->cend(); ++octet)
-//	    {
-//		
-//		if (std::lexicographical_compare(octet,octet.back(),))
+	sort_it((&compare_ipvectors),ip_pool);
 
         for(ippool::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
         {
