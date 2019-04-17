@@ -65,6 +65,52 @@ void sort_it(bool compare(ippool::const_iterator,ippool::const_iterator),ippool 
 	}
 }
 
+class IpFilters {
+	ippool ips;
+	private:
+	void print_ips()
+	{
+		for(auto ip: ips)
+		{
+			for(auto octet: ip)
+			{
+				if (octet != *(ip.cbegin()))
+					std::cout<<".";
+				std::cout << octet;
+			}
+			std::cout<<std::endl;
+		}
+	}
+	public:
+	IpFilters(ippool ips)
+	{
+		this->ips = ips;
+	}
+
+	template<typename... Args>
+	ippool filter(Args... args) {
+		std::vector <std::tuple <std::string, int> > argstuples;
+		auto i=0;
+		for (auto arg:{args...})
+		{
+			argstuples.push_back(std::make_pair(arg, i++));
+		}
+		for (auto ip: ips)
+		{
+			for (auto arg: argstuples) {
+				if ( arg.first != ip.at[arg.second] )
+				{
+					ippool::const_iterator it = ips.cbegin();
+					it += *(arg.first);
+					ips.erase(it);
+				}
+			}
+		}
+		print_ips();
+	}
+
+
+};
 
 
 int main(int argc, char const *argv[])
@@ -94,6 +140,10 @@ int main(int argc, char const *argv[])
             }
             std::cout << std::endl;
         }
+
+	IpFilters filters(ip_pool);
+	filters.filter(1);
+
 
         // 222.173.235.246
         // 222.130.177.64
